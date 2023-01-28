@@ -1,20 +1,63 @@
-name: Docker Image CI
+# name: Docker Image CI
+
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+
+#   # Allows you to run this workflow manually from the Actions tab
+#   workflow_dispatch:
+
+# jobs:
+#   build:
+
+#     runs-on: self-hosted
+
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Build the Docker image
+#       run: docker build . --file Dockerfile --tag image-by-github:$(date +%s)
+name: Build and Publish
 
 on:
+  # run it on push to the default repository branch
   push:
-    branches: [ "main" ]
+    branches: [main]
+  # run it during pull request
   pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
-  build:
+  # define job to build and publish docker image
+  build-and-push-docker-image:
+    name: Build Docker image and push to repositories
+    # run only when code is compiling and tests are passing
+    runs-on: ubuntu-latest
 
-    runs-on: self-hosted
-
+    # steps to perform in job
     steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag image-by-github:$(date +%s)
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # setup Docker buld action
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build image and push to Docker Hub and GitHub Container Registry
+        uses: docker/build-push-action@v2
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: .
+          # Note: tags has to be all lower-case
+          tags: |
+            arafinahmed/image-by-github:latest 
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
