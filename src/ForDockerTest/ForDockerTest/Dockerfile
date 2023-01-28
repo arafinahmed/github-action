@@ -10,10 +10,10 @@ COPY ["src/ForDockerTest/ForDockerTest/ForDockerTest.csproj", "ForDockerTest/"]
 RUN dotnet restore "ForDockerTest/ForDockerTest.csproj"
 COPY . .
 WORKDIR "/src/ForDockerTest"
-RUN dotnet build "ForDockerTest.csproj" -c Release -o /app/build
+RUN dotnet build "ForDockerTest/ForDockerTest.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ForDockerTest.csproj" -c Release -o /app/publish
+RUN dotnet publish "ForDockerTest/ForDockerTest.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
