@@ -7,6 +7,7 @@ EXPOSE 9001
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["src/ForDockerTest/ForDockerTest/ForDockerTest.csproj", "ForDockerTest/"]
+COPY . .
 RUN dotnet restore "ForDockerTest/ForDockerTest.csproj"
 COPY . .
 WORKDIR "/src/ForDockerTest"
