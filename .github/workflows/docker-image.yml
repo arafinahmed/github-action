@@ -31,3 +31,7 @@ jobs:
           context: .
           push: true
           tags: arafinahmed/image-by-github:latest
+      - 
+        name: Build the Docker image
+        uses: actions/checkout@v3
+        run: docker build . --file Dockerfile --tag my-image-name:latest
