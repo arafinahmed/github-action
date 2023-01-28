@@ -18,4 +18,4 @@ RUN dotnet publish "ForDockerTest.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ForDockerTest.dll"]
+ENTRYPOINT ["dotnet", "src/ForDockerTest.dll"]
