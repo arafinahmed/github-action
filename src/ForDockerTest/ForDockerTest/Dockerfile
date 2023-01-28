@@ -6,10 +6,10 @@ EXPOSE 9001
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["src/ForDockerTest/ForDockerTest/ForDockerTest.csproj", "ForDockerTest/"]
+COPY ["ForDockerTest/ForDockerTest/ForDockerTest.csproj", "ForDockerTest/"]
 RUN dotnet restore "ForDockerTest/ForDockerTest.csproj"
 COPY . .
-WORKDIR "/src/ForDockerTest"
+WORKDIR "/src/ForDockerTest/ForDockerTest"
 RUN dotnet build "ForDockerTest.csproj" -c Release -o /app/build
 
 FROM build AS publish
@@ -18,4 +18,4 @@ RUN dotnet publish "ForDockerTest.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "src/ForDockerTest.dll"]
+ENTRYPOINT ["dotnet", "ForDockerTest.dll"]
