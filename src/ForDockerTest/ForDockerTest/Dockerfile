@@ -9,7 +9,7 @@ WORKDIR /src
 COPY ["src/ForDockerTest/ForDockerTest/ForDockerTest.csproj", "ForDockerTest/"]
 RUN dotnet restore "ForDockerTest/ForDockerTest.csproj"
 COPY . .
-WORKDIR "/src/ForDockerTest/ForDockerTest"
+WORKDIR "/src/ForDockerTest"
 RUN dotnet build "ForDockerTest.csproj" -c Release -o /app/build
 
 FROM build AS publish
