@@ -1,7 +1,4 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET
+name: Docker Image CI
 
 on:
   push:
@@ -20,4 +17,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag image-by-github:latest
+      run: docker build . --file Dockerfile --tag image-by-github:$(date +%s)

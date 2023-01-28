@@ -1,22 +1,5 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
-WORKDIR /app
-EXPOSE 80
-
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-WORKDIR /src
-COPY ["src/ForDockerTest/ForDockerTest/ForDockerTest.csproj", "ForDockerTest/"]
-RUN dotnet restore "ForDockerTest/ForDockerTest.csproj"
-COPY . .
-WORKDIR "/src/ForDockerTest"
-COPY . .
-RUN dotnet build "ForDockerTest.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "ForDockerTest.csproj" -c Release -o /app/publish
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ForDockerTest.dll"]
+# Add a new comment to trigger build.
+# basic nginx dockerfile starting with Ubuntu 20.04
+FROM ubuntu:20.04
+RUN apt-get -y update
+RUN apt-get -y install nginx
