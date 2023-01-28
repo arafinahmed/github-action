@@ -18,14 +18,6 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 5.0.x
-    - name: Restore dependencies
-      run: dotnet restore "src/ForDockerTest/ForDockerTest.sln"
-    - name: Build
-      run: dotnet build "src/ForDockerTest/ForDockerTest.sln" --configuration Release --no-restore
-    - name: Test
-      run: dotnet test "src/ForDockerTest/ForDockerTest.sln" --no-restore --verbosity normal
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --file src/ForDockerTest/ForDockerTest/Dockerfile --tag image-by-github:latest
